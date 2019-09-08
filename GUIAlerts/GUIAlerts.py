@@ -1,9 +1,11 @@
+import json
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from urllib.request import urlopen, Request
 
 
 class Ui_MainWindow(QtWidgets.QWidget):
 
-    switch_window = QtCore.pyqtSignal()
+    switch_window = QtCore.pyqtSignal(str)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -21,39 +23,39 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.bg.setPixmap(QtGui.QPixmap("Elements/bg.png"))
         self.bg.setAlignment(QtCore.Qt.AlignCenter)
         self.bg.setObjectName("bg")
-        self.pcbut = QtWidgets.QPushButton(self.centralwidget)
-        self.pcbut.setGeometry(QtCore.QRect(190, 400, 75, 23))
+        self.pc = QtWidgets.QPushButton(self.centralwidget)
+        self.pc.setGeometry(QtCore.QRect(190, 400, 75, 23))
         font = QtGui.QFont()
         font.setFamily("Calibri Light")
-        self.pcbut.setFont(font)
-        self.pcbut.setStyleSheet("background-color: rgb(35, 35, 35);\n"
+        self.pc.setFont(font)
+        self.pc.setStyleSheet("background-color: rgb(35, 35, 35);\n"
 "color: rgb(255, 255, 255);")
-        self.pcbut.setObjectName("pcbut")
-        self.ps4but = QtWidgets.QPushButton(self.centralwidget)
-        self.ps4but.setGeometry(QtCore.QRect(300, 400, 75, 23))
+        self.pc.setObjectName("pc")
+        self.ps4 = QtWidgets.QPushButton(self.centralwidget)
+        self.ps4.setGeometry(QtCore.QRect(300, 400, 75, 23))
         font = QtGui.QFont()
         font.setFamily("Calibri Light")
-        self.ps4but.setFont(font)
-        self.ps4but.setStyleSheet("background-color: rgb(35, 35, 35);\n"
+        self.ps4.setFont(font)
+        self.ps4.setStyleSheet("background-color: rgb(35, 35, 35);\n"
 "color: rgb(255, 255, 255);")
-        self.ps4but.setObjectName("ps4but")
-        self.xboxbut = QtWidgets.QPushButton(self.centralwidget)
-        self.xboxbut.setGeometry(QtCore.QRect(420, 400, 75, 23))
+        self.ps4.setObjectName("ps4")
+        self.xb1 = QtWidgets.QPushButton(self.centralwidget)
+        self.xb1.setGeometry(QtCore.QRect(420, 400, 75, 23))
         font = QtGui.QFont()
         font.setFamily("Calibri Light")
         font.setPointSize(8)
-        self.xboxbut.setFont(font)
-        self.xboxbut.setStyleSheet("background-color: rgb(35, 35, 35);\n"
+        self.xb1.setFont(font)
+        self.xb1.setStyleSheet("background-color: rgb(35, 35, 35);\n"
 "color: rgb(255, 255, 255);")
-        self.xboxbut.setObjectName("xboxbut")
-        self.Swibut = QtWidgets.QPushButton(self.centralwidget)
-        self.Swibut.setGeometry(QtCore.QRect(530, 400, 75, 23))
+        self.xb1.setObjectName("xb1")
+        self.swi = QtWidgets.QPushButton(self.centralwidget)
+        self.swi.setGeometry(QtCore.QRect(530, 400, 75, 23))
         font = QtGui.QFont()
         font.setFamily("Calibri")
-        self.Swibut.setFont(font)
-        self.Swibut.setStyleSheet("background-color: rgb(35, 35, 35);\n"
+        self.swi.setFont(font)
+        self.swi.setStyleSheet("background-color: rgb(35, 35, 35);\n"
 "color: rgb(255, 255, 255);")
-        self.Swibut.setObjectName("Swibut")
+        self.swi.setObjectName("swi")
         self.quitbut = QtWidgets.QPushButton(self.centralwidget)
         self.quitbut.setGeometry(QtCore.QRect(360, 520, 75, 23))
         font = QtGui.QFont()
@@ -79,26 +81,30 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
  
-        self.pcbut.clicked.connect(self.nextwindow)#####
+        #RETURNS STRING OF PLATFORM DEPNDING ON BUTTON CLICK
+        self.pc.clicked.connect(lambda:self.nextwindow(self.pc.objectName()))
+        self.ps4.clicked.connect(lambda:self.nextwindow(self.ps4.objectName()))
+        self.xb1.clicked.connect(lambda:self.nextwindow(self.xb1.objectName()))
+        self.swi.clicked.connect(lambda:self.nextwindow(self.swi.objectName()))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Warframe Alerts Hub"))
-        self.pcbut.setText(_translate("MainWindow", "PC"))
-        self.ps4but.setText(_translate("MainWindow", "PS4"))
-        self.xboxbut.setText(_translate("MainWindow", "XBOX"))
-        self.Swibut.setText(_translate("MainWindow", "SWITCH"))
+        self.pc.setText(_translate("MainWindow", "PC"))
+        self.ps4.setText(_translate("MainWindow", "PS4"))
+        self.xb1.setText(_translate("MainWindow", "XBOX"))
+        self.swi.setText(_translate("MainWindow", "SWITCH"))
         self.quitbut.setText(_translate("MainWindow", "QUIT"))
     
-    def nextwindow(self):
-        self.switch_window.emit()
+    def nextwindow(self,butstr):
+        self.switch_window.emit(butstr)
 
 
 class Home(QtWidgets.QWidget):
 
     switch_window = QtCore.pyqtSignal()
 
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, text):
         Dialog.setObjectName("Dialog")
         Dialog.resize(800, 600)
         Dialog.setStyleSheet("background-color: rgb(0, 0, 0);")
@@ -166,7 +172,9 @@ class Home(QtWidgets.QWidget):
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-        self.pushButton.clicked.connect(self.nextwindow)#####
+        self.pushButton.clicked.connect(self.nextwindow)
+        if text != str:
+            self.alertdata(text)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
@@ -180,58 +188,58 @@ class Home(QtWidgets.QWidget):
     def nextwindow(self):
         self.switch_window.emit()
 
+    def alertdata(self,platform):
 
-    #def __init__(self):
-        #QtWidgets.QWidget.__init__(self)
-        #self.setWindowTitle('Login')
+        #fake browser visit to api URL
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        WFAPI = ('https://api.warframestat.us/%s' % platform)
+        req = Request(url=WFAPI, headers=headers)
+        jsonobj = urlopen(req)
 
-        #layout = QtWidgets.QGridLayout()
+        #JSON
+        data = json.load(jsonobj)
 
-        #self.button = QtWidgets.QPushButton('Login')
-
-        #layout.addWidget(self.button)
-
-        #self.setLayout(layout)
-
-    #def login(self):
-        #self.switch_window.emit()
-
+        for alert in data['alerts']:
+            pass
 
 
 class Controller:
+#controlls data from classes
+    def __init__(self):
 
-    def __init__(self,ui,ui2,window,dialog):
+        #mainwindow init
+        self.MainWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self.MainWindow)
 
-        self.windowone = ui
-        self.windowmain = window
-
-        self.windowtwo = ui2
-        self.windowtwomain = dialog
+        #secondwindow init
+        self.Dialog = QtWidgets.QDialog()
+        self.ui2 = Home()
+        self.ui2.setupUi(self.Dialog,str)
 
     def show_main(self):
 
-        self.windowtwo.close()
-        self.windowone.show()
+        self.Dialog.close()
+        self.MainWindow.show()
+        #QUIT BUTTON
+        self.ui.switch_window.connect(self.show_home)
+        self.ui.quitbut.clicked.connect(self.MainWindow.close)
 
-        self.windowmain.switch_window.connect(self.show_home)
-        self.windowmain.quitbut.clicked.connect(self.windowone.close)
-        print(self.windowmain.pcbut.text())
+    def show_home(self,text):
 
-    def show_home(self):
-
-        self.windowone.close()
-        self.windowtwo.show()
+        self.ui2.setupUi(self.Dialog,text)
+        self.MainWindow.close()
+        self.Dialog.show()
 
         #QUIT and HOME button functions, respectively
-        self.windowtwomain.pushButton_2.clicked.connect(self.windowtwo.close)
-        self.windowtwomain.pushButton.clicked.connect(self.show_main)
+        self.ui2.pushButton_2.clicked.connect(self.Dialog.close)
+        self.ui2.pushButton.clicked.connect(self.show_main)
 
 
-    def show_window_two(self, text):
-
-        self.window_two = WindowTwo(text)
-        self.window.close()
-        self.window_two.show()
+    #def show_window_two(self, text):
+        #self.window_two = WindowTwo(text)
+        #self.window.close()
+        #self.window_two.show()
 
 
 
@@ -245,16 +253,7 @@ if __name__ == "__main__":
 
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    #main window
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    #home window
-    Dialog = QtWidgets.QDialog()
-    ui2 = Home()
-    ui2.setupUi(Dialog)
-
-    controller = Controller(MainWindow,Dialog,ui,ui2)
+    controller = Controller()
     controller.show_main()
     sys.exit(app.exec_())
 
