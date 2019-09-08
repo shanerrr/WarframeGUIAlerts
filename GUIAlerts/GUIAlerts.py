@@ -173,12 +173,13 @@ class Home(QtWidgets.QWidget):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
         self.pushButton.clicked.connect(self.nextwindow)
+
         if text != str:
             self.alertdata(text)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Warframe Alerts Hub"))
         self.syndicatebut.setText(_translate("Dialog", "Syndicate Alerts"))
         self.fissurebut.setText(_translate("Dialog", "Fissure Alerts"))
         self.sortiebut.setText(_translate("Dialog", "Sortie Alerts"))
@@ -199,8 +200,36 @@ class Home(QtWidgets.QWidget):
         #JSON
         data = json.load(jsonobj)
 
+        self.AlertsText.setFontWeight(QtGui.QFont.Bold)
+        self.AlertsText.setFontUnderline(True)
+        self.AlertsText.setAlignment(QtCore.Qt.AlignCenter)
+        self.AlertsText.setTextColor(QtCore.Qt.red)
+        self.AlertsText.append("ACTIVE ALERTS\n\n\n")
+        self.AlertsText.setFontWeight(QtGui.QFont.Normal)
+        self.AlertsText.setFontUnderline(False)
+
+        self.AlertsText.setTextColor(QtCore.Qt.white)
+        self.AlertsText.setFontWeight(QtGui.QFont.Bold)
+        self.AlertsText.insertPlainText("                 Mission Name: ")
+        self.AlertsText.setAlignment(QtCore.Qt.AlignRight)
+        self.AlertsText.insertPlainText("                 Mission Node:")
+        self.AlertsText.setAlignment(QtCore.Qt.AlignLeft)
+        self.AlertsText.insertPlainText("                 Mission Type:\n\n\n\n")
+
+
         for alert in data['alerts']:
-            pass
+            #self.AlertsText.setFontPointSize(11)
+            self.AlertsText.insertPlainText("  " + alert['mission']['description']+"")
+            self.AlertsText.setAlignment(QtCore.Qt.AlignLeft)
+            self.AlertsText.insertPlainText("                     "+alert['mission']['node'])
+            self.AlertsText.setAlignment(QtCore.Qt.AlignCenter)
+            self.AlertsText.insertPlainText(alert['mission']['type']+"\n\n\n\n")
+            #self.AlertsText.setAlignment(QtCore.Qt.AlignRight)
+            #for alertname in alert['mission']:
+                #self.AlertsText.append(alert['description'])#str(alertname['description']))
+
+                #print(str(alertname['description'])
+
 
 
 class Controller:
