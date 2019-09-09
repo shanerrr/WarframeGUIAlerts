@@ -242,39 +242,132 @@ class Home(QtWidgets.QWidget):
         self.alerttext1_2.setTextColor(QtCore.Qt.red)
         self.alerttext1_2.setAlignment(QtCore.Qt.AlignCenter)
         self.alerttext1_2.insertPlainText("ACTIVE ALERTS\n\n\n")
-        #self.AlertsText.setFontWeight(QtGui.QFont.Normal)
 
         self.alerttext1.setFontUnderline(True)
         self.alerttext1_3.setFontUnderline(True)
         self.alerttext1.setFontWeight(QtGui.QFont.Bold)
         self.alerttext1.setTextColor(QtCore.Qt.white)        
         self.alerttext1.setAlignment(QtCore.Qt.AlignCenter)
-        self.alerttext1.insertPlainText("\n\n\nMISSION NAME:\n\n\n\n")
+        self.alerttext1.insertPlainText("\n\n\nMISSION NAME:\n\n\n")
         self.alerttext1_2.setTextColor(QtCore.Qt.white)        
         self.alerttext1_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.alerttext1_2.insertPlainText("MISSION NODE:\n\n\n\n")
+        self.alerttext1_2.insertPlainText("MISSION NODE:\n\n\n")
         self.alerttext1_3.setFontWeight(QtGui.QFont.Bold)
         self.alerttext1_3.setTextColor(QtCore.Qt.white)        
         self.alerttext1_3.setAlignment(QtCore.Qt.AlignCenter)        
-        self.alerttext1_3.insertPlainText("\n\n\nMISSION TYPE:\n\n\n\n")
+        self.alerttext1_3.insertPlainText("\n\n\nMISSION TYPE:\n\n\n")
         self.alerttext1_2.setFontUnderline(False)
         self.alerttext1_3.setFontUnderline(False)
         self.alerttext1.setFontUnderline(False)
 
 
         for alert in data['alerts']:
-            #self.AlertsText.setFontPointSize(11)
 
-            self.alerttext1.setTextColor(QtCore.Qt.green) 
-            self.alerttext1.insertPlainText(alert['mission']['description']+"\n\n")
-            self.alerttext1_2.insertPlainText(alert['mission']['node']+"\n\n")
-            self.alerttext1_3.insertPlainText(alert['mission']['type']+"\n\n")
+            #self.alerttext1.setTextColor(QtCore.Qt.green)
+            self.alerttext1.setFontWeight(QtGui.QFont.Bold)
+            self.alerttext1_2.setFontWeight(QtGui.QFont.Bold)
+            self.alerttext1_3.setFontWeight(QtGui.QFont.Bold)
             
-            #for alertname in alert['mission']:
-                #self.AlertsText.append(alert['description'])#str(alertname['description']))
+            self.alerttext1.insertPlainText(alert['mission']['description']+"\n")
+            self.alerttext1_2.insertPlainText(alert['mission']['node']+"\n")
+            self.alerttext1_3.insertPlainText(alert['mission']['type']+"\n")
+            
+            self.alerttext1.setTextColor(QtCore.Qt.white) 
+            self.alerttext1.setFontWeight(QtGui.QFont.Normal)
+            self.alerttext1_2.setFontWeight(QtGui.QFont.Normal)
+            self.alerttext1_3.setFontWeight(QtGui.QFont.Normal)
 
-                #print(str(alertname['description']))
+            self.alerttext1_2.setFontUnderline(True)
+            self.alerttext1_2.insertPlainText("Faction:\n")
+            self.alerttext1_2.setFontUnderline(False)
+            self.alerttext1_2.insertPlainText((alert['mission']['faction'])+"\n")
 
+            self.alerttext1_3.setFontUnderline(True)
+            self.alerttext1_3.insertPlainText("Enemy Level:\n")
+            self.alerttext1_3.setFontUnderline(False)
+            self.alerttext1_3.insertPlainText("("+ str(alert['mission']['minEnemyLevel'])+"-"+str(alert['mission']['maxEnemyLevel'])+")\n")
+
+            self.alerttext1.setFontUnderline(True)
+            self.alerttext1.insertPlainText("Rewards:\n")
+            self.alerttext1.setFontUnderline(False)
+
+            #print(len(alert['mission']['reward']['itemString']))
+            if (len(alert['mission']['reward']['itemString']) >26):
+                self.alerttext1_3.insertPlainText("\n")
+                self.alerttext1_2.insertPlainText("\n")
+
+            #gets date from combined date and time string
+            num=0
+            expiry=""
+            while alert['expiry'][num] != "T":
+                expiry=expiry + alert['expiry'][num]
+                num = num +1
+
+            #gets time from combined date and time string            
+            num=((alert['expiry']).find("T")+1)
+            expiryT=""
+            while (alert['expiry'][num] != "."):
+                expiryT=expiryT + alert['expiry'][num]
+                num = num +1
+     
+            self.alerttext1.insertPlainText(alert['mission']['reward']['itemString']+"\n")
+            self.alerttext1.insertPlainText("Credits:"+str(alert['mission']['reward']['credits'])+"\n\n\n\n"+"-----------------------------\n\n")
+            self.alerttext1_2.setFontWeight(QtGui.QFont.Bold)
+            self.alerttext1_2.insertPlainText("\n\n"+"Alert Expires:\n")
+            self.alerttext1_2.setFontWeight(QtGui.QFont.Normal)
+            self.alerttext1_2.insertPlainText(expiry+" at "+expiryT+"\n"+"-----------------------------\n\n")
+            self.alerttext1_3.insertPlainText("\n\n\n\n"+"-----------------------------\n\n")
+
+            #CetusandOrb Night/Day Cycle
+        self.textcycle.setAlignment(QtCore.Qt.AlignCenter)
+        self.textcycle.setFontWeight(QtGui.QFont.Bold)
+        self.textcycle.setTextColor(QtCore.Qt.white)
+        self.textcycle.insertPlainText("CETUS DAY/NIGHT CYCYLE\n\n")
+        self.textcycle.insertPlainText("Current State:")
+        if data['cetusCycle']["isDay"]:
+            self.textcycle.setTextColor(QtCore.Qt.yellow)
+            self.textcycle.insertPlainText(" Day\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText("Time until ")
+            self.textcycle.setTextColor(QtCore.Qt.red)
+            self.textcycle.insertPlainText("Night:\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText(data['cetusCycle']['timeLeft'])
+               
+        else:
+            self.textcycle.setTextColor(QtCore.Qt.red)
+            self.textcycle.insertPlainText(" Night\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText("Time until ")
+            self.textcycle.setTextColor(QtCore.Qt.yellow)            
+            self.textcycle.insertPlainText("Day:\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText(data['cetusCycle']['timeLeft'])
+
+        #ORB VALLIS
+        self.textcycle.insertPlainText("\n\n\nORB VALLIS WARM/COLD CYCYLE\n\n")
+        self.textcycle.insertPlainText("Current State:")
+        if data['vallisCycle']["isWarm"]:
+            self.textcycle.setTextColor(QtGui.QColor(255,128,0))
+            self.textcycle.insertPlainText(" Warm\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText("Time until ")
+            self.textcycle.setTextColor(QtCore.Qt.blue)
+            self.textcycle.insertPlainText("Cold:\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText(data['vallisCycle']['timeLeft'])
+        else:
+            self.textcycle.setTextColor(QtCore.Qt.blue)
+            self.textcycle.insertPlainText(" Cold\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText("Time until ")
+            self.textcycle.setTextColor(QtGui.QColor(255,128,0))            
+            self.textcycle.insertPlainText("Warm:\n")
+            self.textcycle.setTextColor(QtCore.Qt.white)
+            self.textcycle.insertPlainText(data['vallisCycle']['timeLeft'])
+
+                    
+        
 
 class Controller:
 #controlls data from classes
