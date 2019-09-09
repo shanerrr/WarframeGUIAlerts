@@ -109,7 +109,7 @@ class Home(QtWidgets.QWidget):
         Dialog.resize(800, 600)
         Dialog.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.AlertsText = QtWidgets.QTextBrowser(Dialog)
-        self.AlertsText.setGeometry(QtCore.QRect(10, 10, 471, 571))
+        self.AlertsText.setGeometry(QtCore.QRect(9, 9, 473, 573))
         self.AlertsText.setStyleSheet("background-color: rgb(54, 54, 54);\n"
 "color: rgb(255, 255, 255);")
         self.AlertsText.setObjectName("AlertsText")
@@ -161,6 +161,39 @@ class Home(QtWidgets.QWidget):
         self.pushButton_2.setStyleSheet("background-color: rgb(54, 54, 54);\n"
 "color: rgb(255, 255, 255);")
         self.pushButton_2.setObjectName("pushButton_2")
+        self.alerttext1 = QtWidgets.QTextBrowser(Dialog)
+        self.alerttext1.setGeometry(QtCore.QRect(10, 10, 157, 571))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.alerttext1.setFont(font)
+        self.alerttext1.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.alerttext1.setObjectName("alerttext1")
+        self.alerttext1_3 = QtWidgets.QTextBrowser(Dialog)
+        self.alerttext1_3.setGeometry(QtCore.QRect(324, 10, 157, 571))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.alerttext1_3.setFont(font)
+        self.alerttext1_3.setAcceptDrops(True)
+        self.alerttext1_3.setInputMethodHints(QtCore.Qt.ImhMultiLine)
+        self.alerttext1_3.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.alerttext1_3.setLineWidth(0)
+        self.alerttext1_3.setObjectName("alerttext1_3")
+        self.alerttext1_2 = QtWidgets.QTextBrowser(Dialog)
+        self.alerttext1_2.setGeometry(QtCore.QRect(167, 10, 157, 571))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(10)
+        self.alerttext1_2.setFont(font)
+        self.alerttext1_2.setAcceptDrops(True)
+        self.alerttext1_2.setInputMethodHints(QtCore.Qt.ImhMultiLine)
+        self.alerttext1_2.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.alerttext1_2.setLineWidth(1)
+        self.alerttext1_2.setObjectName("alerttext1_2")
+        self.textcycle = QtWidgets.QTextBrowser(Dialog)
+        self.textcycle.setGeometry(QtCore.QRect(520, 10, 256, 192))
+        self.textcycle.setObjectName("textcycle")
         self.MainPagebg.raise_()
         self.AlertsText.raise_()
         self.syndicatebut.raise_()
@@ -168,12 +201,16 @@ class Home(QtWidgets.QWidget):
         self.sortiebut.raise_()
         self.pushButton.raise_()
         self.pushButton_2.raise_()
+        self.alerttext1.raise_()
+        self.alerttext1_3.raise_()
+        self.alerttext1_2.raise_()
+        self.textcycle.raise_()
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
-
+   
+    
         self.pushButton.clicked.connect(self.nextwindow)
-
         if text != str:
             self.alertdata(text)
 
@@ -200,36 +237,38 @@ class Home(QtWidgets.QWidget):
         #JSON
         data = json.load(jsonobj)
 
-        self.AlertsText.setFontWeight(QtGui.QFont.Bold)
-        self.AlertsText.setFontUnderline(True)
-        self.AlertsText.setAlignment(QtCore.Qt.AlignCenter)
-        self.AlertsText.setTextColor(QtCore.Qt.red)
-        self.AlertsText.append("ACTIVE ALERTS\n\n\n")
-        self.AlertsText.setFontWeight(QtGui.QFont.Normal)
-        self.AlertsText.setFontUnderline(False)
+        self.alerttext1_2.setFontWeight(QtGui.QFont.Bold)
+        self.alerttext1_2.setFontUnderline(True)
+        self.alerttext1_2.setTextColor(QtCore.Qt.red)
+        self.alerttext1_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.alerttext1_2.insertPlainText("ACTIVE ALERTS\n\n\n")
+        #self.AlertsText.setFontWeight(QtGui.QFont.Normal)
+        self.alerttext1_2.setFontUnderline(False)
 
-        self.AlertsText.setTextColor(QtCore.Qt.white)
-        self.AlertsText.setFontWeight(QtGui.QFont.Bold)
-        self.AlertsText.insertPlainText("                 Mission Name: ")
-        self.AlertsText.setAlignment(QtCore.Qt.AlignRight)
-        self.AlertsText.insertPlainText("                 Mission Node:")
-        self.AlertsText.setAlignment(QtCore.Qt.AlignLeft)
-        self.AlertsText.insertPlainText("                 Mission Type:\n\n\n\n")
+        self.alerttext1.setFontWeight(QtGui.QFont.Bold)
+        self.alerttext1.setTextColor(QtCore.Qt.white)        
+        self.alerttext1.setAlignment(QtCore.Qt.AlignCenter)
+        self.alerttext1.insertPlainText("\n\n\nMISSION NAME:\n\n\n\n")
+        self.alerttext1_2.setTextColor(QtCore.Qt.white)        
+        self.alerttext1_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.alerttext1_2.insertPlainText("MISSION NODE:\n\n\n\n")
+        self.alerttext1_3.setFontWeight(QtGui.QFont.Bold)
+        self.alerttext1_3.setTextColor(QtCore.Qt.white)        
+        self.alerttext1_3.setAlignment(QtCore.Qt.AlignCenter)        
+        self.alerttext1_3.insertPlainText("\n\n\nMISSION TYPE:\n\n\n\n")                   
 
 
         for alert in data['alerts']:
             #self.AlertsText.setFontPointSize(11)
-            self.AlertsText.insertPlainText("  " + alert['mission']['description']+"")
-            self.AlertsText.setAlignment(QtCore.Qt.AlignLeft)
-            self.AlertsText.insertPlainText("                     "+alert['mission']['node'])
-            self.AlertsText.setAlignment(QtCore.Qt.AlignCenter)
-            self.AlertsText.insertPlainText(alert['mission']['type']+"\n\n\n\n")
-            #self.AlertsText.setAlignment(QtCore.Qt.AlignRight)
+
+            self.alerttext1.insertPlainText(alert['mission']['description']+"\n\n")
+            self.alerttext1_2.insertPlainText(alert['mission']['node']+"\n\n")
+            self.alerttext1_3.insertPlainText(alert['mission']['type']+"\n\n")
+            
             #for alertname in alert['mission']:
                 #self.AlertsText.append(alert['description'])#str(alertname['description']))
 
-                #print(str(alertname['description'])
-
+                #print(str(alertname['description']))
 
 
 class Controller:
@@ -250,6 +289,7 @@ class Controller:
 
         self.Dialog.close()
         self.MainWindow.show()
+
         #QUIT BUTTON
         self.ui.switch_window.connect(self.show_home)
         self.ui.quitbut.clicked.connect(self.MainWindow.close)
