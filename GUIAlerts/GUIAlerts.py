@@ -243,8 +243,9 @@ class Home(QtWidgets.QWidget):
         self.alerttext1_2.setAlignment(QtCore.Qt.AlignCenter)
         self.alerttext1_2.insertPlainText("ACTIVE ALERTS\n\n\n")
         #self.AlertsText.setFontWeight(QtGui.QFont.Normal)
-        self.alerttext1_2.setFontUnderline(False)
 
+        self.alerttext1.setFontUnderline(True)
+        self.alerttext1_3.setFontUnderline(True)
         self.alerttext1.setFontWeight(QtGui.QFont.Bold)
         self.alerttext1.setTextColor(QtCore.Qt.white)        
         self.alerttext1.setAlignment(QtCore.Qt.AlignCenter)
@@ -255,12 +256,16 @@ class Home(QtWidgets.QWidget):
         self.alerttext1_3.setFontWeight(QtGui.QFont.Bold)
         self.alerttext1_3.setTextColor(QtCore.Qt.white)        
         self.alerttext1_3.setAlignment(QtCore.Qt.AlignCenter)        
-        self.alerttext1_3.insertPlainText("\n\n\nMISSION TYPE:\n\n\n\n")                   
+        self.alerttext1_3.insertPlainText("\n\n\nMISSION TYPE:\n\n\n\n")
+        self.alerttext1_2.setFontUnderline(False)
+        self.alerttext1_3.setFontUnderline(False)
+        self.alerttext1.setFontUnderline(False)
 
 
         for alert in data['alerts']:
             #self.AlertsText.setFontPointSize(11)
 
+            self.alerttext1.setTextColor(QtCore.Qt.green) 
             self.alerttext1.insertPlainText(alert['mission']['description']+"\n\n")
             self.alerttext1_2.insertPlainText(alert['mission']['node']+"\n\n")
             self.alerttext1_3.insertPlainText(alert['mission']['type']+"\n\n")
